@@ -1,16 +1,19 @@
-# Use Maven to build the application
-FROM maven:3.8.4-openjdk-11 as builder
+# Use official Maven image with Java 11
+FROM maven:3.8.6-openjdk-11-slim as builder
 
 WORKDIR /app
 
-# Copy pom.xml and source code
+# Copy pom.xml first for better caching
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy source code
 COPY src ./src
 
 # Build the application
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -B
 
-# Use OpenJDK for runtime
+# Runtime stage with Java 11
 FROM openjdk:11-jre-slim
 
 WORKDIR /app
