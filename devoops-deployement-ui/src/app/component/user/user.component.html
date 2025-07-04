@@ -1,0 +1,78 @@
+<div class="container">
+  <h2>User Management</h2>
+  
+  <!-- User Form -->
+  <div class="form-section">
+    <h3>{{ isEditing ? 'Edit User' : 'Add New User' }}</h3>
+    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input 
+          type="text" 
+          id="name" 
+          [(ngModel)]="selectedUser.name" 
+          name="name" 
+          required 
+          class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input 
+          type="email" 
+          id="email" 
+          [(ngModel)]="selectedUser.email" 
+          name="email" 
+          required 
+          class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input 
+          type="text" 
+          id="phone" 
+          [(ngModel)]="selectedUser.phone" 
+          name="phone" 
+          class="form-control">
+      </div>
+      
+      <div class="form-buttons">
+        <button type="submit" [disabled]="!userForm.form.valid" class="btn btn-primary">
+          {{ isEditing ? 'Update' : 'Create' }}
+        </button>
+        <button type="button" (click)="resetForm()" class="btn btn-secondary">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Users List -->
+  <div class="users-section">
+    <h3>Users List</h3>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>
+            <button (click)="editUser(user)" class="btn btn-edit">Edit</button>
+            <button (click)="deleteUser(user.id!)" class="btn btn-delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
